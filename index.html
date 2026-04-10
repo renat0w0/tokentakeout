@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Token de Saída</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="selector">
+    <span>Selecione a portaria</span>
+    <div id="selector-buttons">
+      <button class="sel-btn" onclick="selectPortaria(1)">1</button>
+      <button class="sel-btn" onclick="selectPortaria(2)">2</button>
+      <button class="sel-btn" onclick="selectPortaria(3)">3</button>
+    </div>
+  </div>
+
+  <div id="display">
+    <div id="top-info">
+      <span id="clock">--:--:--</span>
+    </div>
+
+    <div id="token">---</div>
+
+    <div id="bottom">
+      <div id="progress-wrap">
+        <div id="progress-bar"></div>
+      </div>
+      <div id="portaria-label">Portaria 1</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
