@@ -16,7 +16,6 @@ html, body {
   overflow: hidden;
 }
 
-/* ─── Tela principal ─────────────────────────────────────────────────── */
 #display {
   display: none;
   flex-direction: column;
@@ -27,14 +26,12 @@ html, body {
   padding: 6vh 4vw;
 }
 
-/* Topo: relógio */
 #top-info {
   font-size: clamp(1rem, 2.2vw, 1.6rem);
   color: #555;
   font-variant-numeric: tabular-nums;
 }
 
-/* Token gigante no centro */
 #token {
   font-size: clamp(8rem, 35vw, 28rem);
   font-weight: 900;
@@ -50,7 +47,6 @@ html, body {
   opacity: 0;
 }
 
-/* Rodapé: barra de progresso + portaria */
 #bottom {
   display: flex;
   flex-direction: column;
@@ -87,7 +83,22 @@ html, body {
   text-transform: uppercase;
 }
 
-/* ─── Seletor ────────────────────────────────────────────────────────── */
+#standby {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 10;
+}
+
+#standby-clock {
+  position: absolute;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+
 #selector {
   display: none;
   flex-direction: column;
