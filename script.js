@@ -63,9 +63,9 @@ function isTokenVisible(portaria, now) {
   const mins = now.getHours() * 60 + now.getMinutes();
   const inWindow = (start, end) => mins >= start && mins <= end;
 
-  const manhaP1 = inWindow(12 * 60, 12 * 60 + 40);
-  const manhaP23 = inWindow(12 * 60 + 10, 12 * 60 + 40);
-  const tarde = inWindow(15 * 60 + 50, 16 * 60 + 20);
+  const manhaP1 = inWindow(12 * 60, 12 * 60 + 50);
+  const manhaP23 = inWindow(12 * 60 + 10, 12 * 60 + 50);
+  const tarde = inWindow(15 * 60 + 50, 16 * 60 + 30);
 
   const manha = portaria === 1 ? manhaP1 : manhaP23;
   const tt = dow === 2 || dow === 4;

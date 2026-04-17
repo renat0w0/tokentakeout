@@ -93,8 +93,8 @@ html, body {
 
 #standby-clock {
   position: absolute;
-  font-size: 0.9rem;
-  color: #1a1a1a;
+  font-size: 1.6rem;
+  color: #5a5a5a;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.1em;
 }
