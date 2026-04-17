@@ -28,7 +28,7 @@ html, body {
 
 #top-info {
   font-size: clamp(1rem, 2.2vw, 1.6rem);
-  color: #555;
+  color: #bbb;
   font-variant-numeric: tabular-nums;
 }
 
@@ -81,6 +81,22 @@ html, body {
   color: #777;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+#standby {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 10;
+}
+
+#standby-clock {
+  position: absolute;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
 }
 
 #selector {

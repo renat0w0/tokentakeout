@@ -21,6 +21,28 @@ const KEYS = {
       "2","2","7","2","2","8","5","5","2","0","0"],
 };
 
+(function setupFakeClock() {
+  const fake = new URLSearchParams(location.search).get('fake');
+  if (!fake) return;
+  const m = fake.match(/^(?:(\d{4}-\d{2}-\d{2})[T ])?(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  if (!m) { console.warn('fake inválido. Ex: ?fake=15:49:50 ou ?fake=2026-04-14T15:49:50'); return; }
+  const [, dateStr, hh, mm, ss] = m;
+  const base = dateStr ? new Date(dateStr + 'T00:00:00') : new Date();
+  base.setHours(+hh, +mm, ss ? +ss : 0, 0);
+  const offset = base.getTime() - Date.now();
+  const _D = Date;
+  const Faked = function(...a) {
+    if (!(this instanceof Faked)) return new _D(_D.now() + offset).toString();
+    return a.length ? new _D(...a) : new _D(_D.now() + offset);
+  };
+  Faked.prototype = _D.prototype;
+  Faked.now = () => _D.now() + offset;
+  Faked.parse = _D.parse;
+  Faked.UTC = _D.UTC;
+  window.Date = Faked;
+  console.log('[fake clock] base =', new Date().toString());
+})();
+
 function calcToken(portaria) {
   const minuto = new Date().getMinutes();
   const CASA1 = minuto < 10 ? parseInt("1" + minuto) : minuto;
@@ -32,6 +54,41 @@ function calcToken(portaria) {
 
 let portaria = null;
 let lastMinute = -1;
+let lastStandbyMinute = -1;
+
+function isTokenVisible(portaria, now) {
+  const dow = now.getDay();
+  if (dow === 0 || dow === 6) return false;
+
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const inWindow = (start, end) => mins >= start && mins <= end;
+
+  const manhaP1 = inWindow(12 * 60, 12 * 60 + 40);
+  const manhaP23 = inWindow(12 * 60 + 10, 12 * 60 + 40);
+  const tarde = inWindow(15 * 60 + 50, 16 * 60 + 20);
+
+  const manha = portaria === 1 ? manhaP1 : manhaP23;
+  const tt = dow === 2 || dow === 4;
+
+  if (tt && portaria === 3) return manha;
+  return manha || tarde;
+}
+
+function updateStandby(now) {
+  const minuto = now.getMinutes();
+  const el = document.getElementById('standby-clock');
+  el.textContent =
+    String(now.getHours()).padStart(2, '0') + ':' +
+    String(minuto).padStart(2, '0');
+
+  if (minuto !== lastStandbyMinute) {
+    const top = 5 + Math.random() * 90;
+    const left = 5 + Math.random() * 90;
+    el.style.top = top + '%';
+    el.style.left = left + '%';
+    lastStandbyMinute = minuto;
+  }
+}
 
 function selectPortaria(p) {
   portaria = p;
@@ -53,6 +110,17 @@ function tick() {
   const now = new Date();
   const minuto = now.getMinutes();
   const segundo = now.getSeconds();
+
+  const forceOn = new URLSearchParams(location.search).get('nostandby') === '1';
+  const visible = forceOn || isTokenVisible(portaria, now);
+  document.getElementById('standby').style.display = visible ? 'none' : 'block';
+  document.getElementById('display').style.display = visible ? 'flex' : 'none';
+
+  if (!visible) {
+    updateStandby(now);
+    lastMinute = -1;
+    return;
+  }
 
   document.getElementById('clock').textContent =
     String(now.getHours()).padStart(2,'0') + ':' +
