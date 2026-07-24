@@ -63,15 +63,16 @@ function isTokenVisible(portaria, now) {
   const mins = now.getHours() * 60 + now.getMinutes();
   const inWindow = (start, end) => mins >= start && mins <= end;
 
-  if (portaria === 1) {
-    return inWindow(12 * 60 + 45, 13 * 60 + 10);
-  }
-
-  const manha = inWindow(12 * 60 + 10, 12 * 60 + 50);
+  const manhaP1 = inWindow(12 * 60, 12 * 60 + 50);
+  const manhaP23 = inWindow(12 * 60 + 10, 12 * 60 + 50);
   const tarde = inWindow(15 * 60 + 50, 16 * 60 + 30);
+  const tardeP1tt = inWindow(15 * 60 + 40, 16 * 60 + 20);
+
+  const manha = portaria === 1 ? manhaP1 : manhaP23;
   const tt = dow === 2 || dow === 4;
 
   if (tt && portaria === 3) return manha;
+  if (tt && portaria === 1) return manha || tardeP1tt;
   return manha || tarde;
 }
 
